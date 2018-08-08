@@ -4,6 +4,8 @@ const PREFIX = 'room';
 
 module.exports = () => {
   return async (ctx, next) => {
+    ctx.socket.id = ctx.socket.handshake.query.userName;
+    // ctx.socket.id =
     const { app, socket, logger, helper } = ctx;
     const id = socket.id;
     const nsp = app.io.of('/');

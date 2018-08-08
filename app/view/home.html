@@ -23,11 +23,18 @@
   <div class="console-wrapper">
     <pre id="console"></pre>
   </div>
+  <input type="text" id="name">
+  <button id="register">注册</button>
+  <div>消息</div>
+  <input type="text" id="message">
+  <button id="send">发送</button>
   <script src="https://cdn.bootcss.com/socket.io/2.1.0/socket.io.js"></script>
   <script src="https://cdn.bootcss.com/lodash.js/4.17.10/lodash.min.js"></script>
   <script>
     // 不重要的代码，仅展示使用 - start
     const con = document.querySelector('#console');
+    const name = document.querySelector('#name');
+    const register = document.querySelector('#register');
     const doc = document.documentElement;
     const wh = document.documentElement.clientHeight;
 
@@ -42,7 +49,6 @@
         _scrollToBottom();
       }
     };
-
     const log = function() {
       let msgList = [].slice.apply(arguments);
       msgList = msgList.map(function(msg) {
@@ -61,15 +67,20 @@
     };
 
     // 不重要的代码，仅展示使用 - end
-
-    window.onload = function () {
+    let user = ''
+    register.onclick = function(e) {
+      user = name.value
+      Message(user)
+    }
+    window.onload = Message
+    function Message (user) {
       // init
       const socket = io('/', {
-
         // 实际使用中可以在这里传递参数
         query: {
           room: 'demo',
           userId: `client_${Math.random()}`,
+          userName: typeof(user) === 'string' ? user : ''
         },
 
         transports: ['websocket']
@@ -103,7 +114,9 @@
       socket.on('error', () => {
         log('#error');
       });
-
+      socket.emit('send', msg => {
+        log(发送)
+      })
       window.socket = socket;
     };
 
