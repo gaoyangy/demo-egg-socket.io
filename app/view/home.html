@@ -25,9 +25,9 @@
   </div>
   <input type="text" id="name">
   <button id="register">注册</button>
-  <div>消息</div>
+  <div>消息{{egg}}</div>
   <input type="text" id="message">
-  <button id="send">发送</button>
+  <button id="sendmsg">发送</button>
   <script src="https://cdn.bootcss.com/socket.io/2.1.0/socket.io.js"></script>
   <script src="https://cdn.bootcss.com/lodash.js/4.17.10/lodash.min.js"></script>
   <script>
@@ -37,6 +37,7 @@
     const register = document.querySelector('#register');
     const doc = document.documentElement;
     const wh = document.documentElement.clientHeight;
+    const sendmsg = document.querySelector('#sendmsg');
 
     const _scrollToBottom = (function() {
       return _.throttle(function() {
@@ -73,6 +74,9 @@
       Message(user)
     }
     window.onload = Message
+    sendmsg.onclick=function(){
+      socket.emit('send', {add: '123456789'})
+    }
     function Message (user) {
       // init
       const socket = io('/', {
